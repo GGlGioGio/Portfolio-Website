@@ -9,10 +9,13 @@ CSS3: Responsive design, Flexbox for layout, custom animations, and clean UI com
 JavaScript (Vanilla): Interaction logic and dynamic content handling.
 
 ## Project Structure
-index.html: Main structure of the portfolio.
-
-style.css: All styles, including custom card components and layout configurations.
-
-script.js: Dynamic functionality and interactivity.
-
-assets/: Contains project logos, educational certificates, and media assets.
+```
+├── 📁 assets          Contains project logos, educational certificates, and media assets.
+│   ├── 📁 CV
+│   ├── 📁 icons
+│   └── 📁 images
+├── 📝 README.md
+├── 🌐 index.html
+├── 📄 script.js       Dynamic functionality and interactivity.
+└── 🎨 style.css       All styles, including custom card components and layout configurations.
+```
