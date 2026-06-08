@@ -1,24 +1,22 @@
 document.getElementById('emailBtn').addEventListener('click', function() {
-    // 1. Укажите здесь свой настоящий рабочий email
+    // Email which we use
     const emailAddress = "khelaia.gg@gmail.com"; 
     
-    // 2. Используем Clipboard API для копирования текста в буфер обмена
+    // Clipboard API to copy the email address to the clipboard
     navigator.clipboard.writeText(emailAddress).then(() => {
         const btn = document.getElementById('emailBtn');
         
-        // Сохраняем исходное содержимое кнопки, чтобы вернуть его позже
+        // save the original content to restore it later
         const originalContent = `Email <i class="fa-solid fa-envelope"></i>`;
         
-        // Изменяем текст и ставим галочку вместо конверта
         btn.innerHTML = `Copied! <i class="fa-solid fa-check"></i>`;
         
-        // Блокируем кнопку на время анимации, чтобы избежать повторных частых кликов
         btn.style.pointerEvents = 'none'; 
         
-        // Через 2 секунды (2000 миллисекунд) возвращаем всё в исходное состояние
+        // After 2 seconds, revert the button back to its original state
         setTimeout(() => {
             btn.innerHTML = originalContent;
-            btn.style.pointerEvents = 'auto'; // Возвращаем кнопке кликабельность
+            btn.style.pointerEvents = 'auto';
         }, 2000);
     }).catch(err => {
         console.error('Couldnt copy the text: ', err);
