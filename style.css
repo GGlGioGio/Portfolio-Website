@@ -1,0 +1,861 @@
+
+
+/* Делаем прокрутку плавной */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Добавляем отступ сверху для секций при клике из навбара.
+  Замени 100px на реальную высоту твоей навигационной панели + желаемый зазор.
+*/
+section[id] {
+    scroll-margin-top: 100px; 
+}
+
+/* ==========================================================================
+   1. ГЛОБАЛЬНЫЕ СТИЛИ И СБРОС ОТСТУПОВ
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #ffffff;
+    color: #252525;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    max-width: 1600px;    /* Контент не растягивается шире 1200px */
+    margin: 0 auto;       /* Центрируем сайт по центру экрана */
+    padding: 0 20px;      /* Отступы по бокам, чтобы не липло к краям */
+}
+
+/* ==========================================================================
+   2. ШАПКА САЙТА (ПРОЗРАЧНАЯ НАВИГАЦИЯ)
+   ========================================================================== */
+.navbar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;                          
+    position: relative; /* 🌟 Важно для абсолютного позиционирования меню по центру */
+}
+
+.GiorgiKhelaia h1 {
+    font-size: 1.6rem;
+    font-weight: 700;               
+    color: #252525;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 55px;                    
+    align-items: center;           
+
+    /* 🌟 ТРЮК ДЛЯ ИДЕАЛЬНОГО ЦЕНТРИРОВАНИЯ МЕНЮ ПО ЭКРАНУ */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ==========================================================================
+   ОБНОВЛЕННЫЕ ССЫЛКИ В НАВИГАЦИИ (УВЕЛИЧЕНИЕ + ЛИНИЯ)
+   ========================================================================== */
+
+.nav-links a {
+    text-decoration: none;
+    color: #252525;
+    font-weight: 600;
+    font-size: 20px;
+    display: block; 
+    position: relative; /* Нужно для точного позиционирования линии под текстом */
+    
+    /* Добавляем transform в transition, чтобы увеличение было плавным */
+    transition: color 0.2s ease, transform 0.2s ease; 
+}
+
+/* Эффект при наведении на саму ссылку */
+.nav-links a:hover {
+    color: #cc0c0c; 
+    transform: scale(1.08); /* Слегка увеличивает ссылку (на 8%) */
+}
+
+/* Создаем скрытую линию под ссылкой */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px; /* Расстояние от текста до линии */
+    width: 100%;
+    height: 3px; /* Толщина линии под подчеркиванием */
+    background-color: #cc0c0c; /* Фирменный красный цвет */
+    
+    /* Изначально сжимаем линию в точку по горизонтали (scaleX) */
+    transform: scaleX(0); 
+    /* Задаем центр трансформации, чтобы линия раскрывалась из середины */
+    transform-origin: center; 
+    
+    /* Плавность появления линии */
+    transition: transform 0.25s ease-in-out;
+}
+
+/* При наведении линия плавно растягивается на всю ширину */
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+
+/* ==========================================================================
+   3. ГЛАВНЫЙ БЛОК (HERO SECTION)
+   ========================================================================== */
+.hero-section {
+    padding: 80px 0;                /* Расстояние сверху и снизу до контента */
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+/* Настройка сетки для главного блока */
+.hero-container {
+    display: flex;
+    justify-content: space-between; /* Текст уйдет влево, фото — вправо */
+    align-items: center;            /* Выравнивание по центру высоты */
+    gap: 50px;                      /* Расстояние между текстом и фото */
+}
+
+.hero-content {
+    flex: 1; /* Занимает доступное пространство слева */
+}
+
+.hero-image-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Сдвигает фото ближе к правому краю */
+}
+
+/* ==========================================================================
+   ОБНОВЛЕННЫЙ ВАРИАНТ 3: ОБЩИЙ ДРЕЙФ ДЛЯ ВСЕХ ОБЪЕКТОВ (УВЕЛИЧЕННЫЙ)
+   ========================================================================== */
+
+/* 1. Общий контейнер — теперь ИМЕННО ОН дрейфует туда-сюда целиком */
+.hero-image-wrapper {
+    position: relative;
+    width: 460px; /* Увеличенный размер всей зоны */
+    height: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Запускаем постоянное покачивание для ВСЕГО блока сразу */
+    animation: liveGlobalFloat 5s ease-in-out infinite;
+}
+
+/* 2. Задний фон (красный пунктир) — он крутится сам по себе, но дрейфует вместе со всеми */
+.hero-image-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 460px; /* Сделали побольше */
+    height: 460px;
+    border: 5px dashed #cc0c0c; /* Сочный красный пунктир */
+    
+    /* Точная форма «живой» рамки с твоего референса */
+    border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+    
+    /* Бесконечное плавное вращение */
+    animation: liveRotate 15s linear infinite;
+    z-index: 1;
+}
+
+/* 3. Центральное фото со своей черной линией (границей) */
+.hero-avatar {
+    width: 400px; /* Увеличенный размер аватарки */
+    height: 400px;
+    object-fit: cover;
+    border: 5px solid #252525; /* Четкая черная линия вокруг фото */
+    
+    /* Форма внутренней рамки, повторяющая изгибы */
+    border-radius: 50% 45% 52% 48% / 48% 52% 45% 50%;
+    
+    background-color: #fff;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+/* Небольшой интерактив: при наведении мышки фото слегка масштабируется */
+.hero-avatar:hover {
+    transform: scale(1.03);
+}
+
+/* ==========================================================================
+   КЛЮЧЕВЫЕ КАДРЫ ДЛЯ ЛАЙВ-АНИМАЦИЙ
+   ========================================================================== */
+
+/* Анимация покачивания ДЛЯ ВСЕХ ОБЪЕКТОВ сразу (смещение по X и Y) */
+@keyframes liveGlobalFloat {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-15px, -20px); /* Плавно уплывает по диагонали вверх и влево */
+    }
+    100% {
+        transform: translate(0, 0); /* Возвращается обратно */
+    }
+}
+
+/* Анимация вращения красного пунктира */
+@keyframes liveRotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.welcome-text {
+    font-size: 40px;
+    font-weight: 600; 
+    color: #252525;
+    margin-bottom: 10px;
+}
+
+.Bftext {
+    font-size: 100px;                /* Сделал чуть крупнее, так эффектнее */
+    font-weight: 900;               /* Максимальная жирность */
+    line-height: 1.1;               /* Чтобы строчки Full Stack и Developer стояли плотнее */
+    color: #252525;
+    text-shadow: 4px 4px 0 #cc0c0c; /* Твоя фирменная красная тень */
+    margin-bottom: 35px;
+}
+
+/* ==========================================================================
+   4. КНОПКИ (НЕО-БРУТАЛИЗМ)
+   ========================================================================== */
+.btn-container {
+    display: flex;
+    gap: 20px;                      /* Расстояние МЕЖДУ кнопками */
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #252525;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 3px solid #252525;
+    background: #cc0c0c;
+    box-shadow: 3px 3px #252525;    /* Твоя изначальная объемная тень */
+    cursor: pointer;
+    
+    /* ⚙️ СВОЙСТВА ДЛЯ ОДИНАКОВОГО РАЗМЕРА И ЦЕНТРИРОВАНИЯ ИКОНОК */
+    width: 170px;                   /* Одинаковая ширина для всех кнопок */
+    display: inline-flex;
+    justify-content: center;        /* Текст и иконка по центру по горизонтали */
+    align-items: center;            /* Текст и иконка по центру по vertical */
+    gap: 10px;                      /* Отступ между текстом и иконкой внутри кнопки */
+    
+    /* Плавный переход для трансформации и тени */
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* 🌟 ЭФФЕКТ ПРИ НАВЕДЕНИИ КУРСОРOM: кнопка переходит в состояние нажатия */
+button:hover {
+    box-shadow: none;               /* Тень исчезает */
+    transform: translate(3px, 3px); /* Кнопка плавно сдвигается на место тени */
+}
+
+/* Фиксируем состояние при клике, чтобы кнопка не прыгала дальше */
+button:active {
+    box-shadow: none;
+    transform: translate(3px, 3px);
+}
+
+/* ==========================================================================
+   5. АДАПТИВНОСТЬ ПОД МОБИЛЬНЫЕ (Адаптив)
+   ========================================================================== */
+@media only screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;     /* На телефонах имя будет сверху, ссылки под ним */
+        gap: 20px;
+    }
+    
+    .nav-links {
+        margin: 0;                  /* На мобилках сбрасываем центрирование по экрану */
+        gap: 20px;
+    }
+    
+    .Bftext {
+        font-size: 45px;            /* Уменьшаем шрифт на телефонах, чтоб не вылезал */
+    }
+    
+    .btn-container {
+        flex-direction: column;     /* Кнопки встают друг под другом */
+        width: 100%;
+    }
+    
+    button {
+        width: 100%;                /* Кнопки растягиваются во всю ширину экрана смартфона */
+    }
+}
+
+
+/* Настраиваем мягкое цветное свечение без каких-либо контуров и границ */
+.blur-bg-shape {
+    position: absolute;
+    top: 50px;         /* Поднимаем повыше за текст */
+    left: -50px;        /* Сдвигаем чуть левее */
+    width: 600px;       /* Увеличиваем размер, чтобы цвет рассеивался на большую площадь */
+    height: 450px;
+    
+    /* Используем мягкие полупрозрачные цвета для градиента */
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.35), rgba(187, 42, 23, 0.25)); 
+    
+    /* Сглаживаем форму в овал, чтобы убрать углы исходного контейнера */
+    border-radius: 50%; 
+    
+    /* 🌟 МАКСИМАЛЬНОЕ РАЗМЫТИЕ: полностью растворяет любые очертания и границы */
+    filter: blur(120px); 
+    
+    z-index: -1;        /* Уводим строго под текст */
+    pointer-events: none;
+}
+
+.blur-bg-shape2 {
+    position: absolute;
+    top: 350px;         /* Поднимаем повыше за текст */
+    left: 1350px;        /* Сдвигаем чуть левее */
+    width: 700px;       /* Увеличиваем размер, чтобы цвет рассеивался на большую площадь */
+    height: 550px;
+    
+    /* Используем мягкие полупрозрачные цвета для градиента */
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.35), rgba(187, 42, 23, 0.25)); 
+    
+    /* Сглаживаем форму в овал, чтобы убрать углы исходного контейнера */
+    border-radius: 50%; 
+    
+    /* 🌟 МАКСИМАЛЬНОЕ РАЗМЫТИЕ: полностью растворяет любые очертания и границы */
+    filter: blur(120px); 
+    
+    z-index: -1;        /* Уводим строго под текст */
+    pointer-events: none;
+}
+
+
+/* ==========================================================================
+   6. social
+   ========================================================================== */
+
+   /* Общий контейнер для ряда иконок */
+.social-login-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Создает эффект зеркального отражения снизу под кнопками */
+  -webkit-box-reflect: below 5px linear-gradient(transparent, #00000055);
+}
+
+/* Ограничиваем базовый размер всех SVG-изображений */
+.social-login-icons svg {
+  width: 40px;
+}
+
+/* Общие стили для внутренних блоков (как статичных, так и скрытых цветных) */
+.social-icon-linkedin-static,
+.social-icon-linkedin-hover,
+.social-icon-github-static,
+.social-icon-github-hover {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px; /* Делает форму кнопок идеально круглой */
+  margin: 20px 0 0px 0;
+}
+
+/* Стили по умолчанию для иконок в спокойном состоянии (делаем их темными) */
+.icon svg {
+  fill: #111;
+}
+
+/* Контейнер-маска. Он обрезает выезжающие цветные круги, пока нет наведения */
+.socialcontainer {
+  height: 80px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Изначально скрываем иконки внутри цветных блоков с помощью прозрачности */
+.social-icon-linkedin-hover svg,
+.social-icon-github-hover svg {
+  opacity: 0;
+  transition-duration: 0.5s;
+  transition-delay: 0.2s; /* Небольшая задержка, чтобы иконка проявилась позже прыжка */
+}
+
+/* Базовые стили для верхних статичных блоков (прозрачный фон) */
+.social-icon-linkedin-static,
+.social-icon-github-static {
+  transition-duration: 0.4s;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* ==========================================================================
+   7. СЕКЦИЯ ТЕХНОЛОГИЙ (TECH STACK) — СИНХРОННЫЙ ВЕРТИКАЛЬНЫЙ ДРЕЙФ
+   ========================================================================== */
+
+
+
+.title {
+    font-size: 80px; 
+    font-weight: 900; 
+    line-height: 1.1; 
+    color: #252525;
+    text-shadow: 4px 4px 0 #ac0a0ad2; 
+    margin-bottom: 35px;
+    
+    /* 🌟 ТРЮК ТУТ: центрируем текст */
+    text-align: center;
+}
+
+.title_education {
+    font-size: 30px; 
+    font-weight: 600;
+    line-height: 1.1; 
+    color: #252525;
+    margin-bottom: 10px;
+    
+    /* 🌟 ТРЮК ТУТ: центрируем текст */
+    text-align: center;
+}
+
+
+/* Удобная сетка, где элементы выстроены ровно по 5 штук в ряд */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 40px; /* Свободный отступ между элементами */
+}
+
+/* Сам элемент стека: картинка + подпись дрейфуют ВМЕСТЕ */
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    
+    /* Запускаем плавное движение вверх-вниз для ВСЕГО элемента (иконка + текст) */
+    animation: liveVerticalFloat 4s ease-in-out infinite;
+    
+    /* Плавный переход для ховера (копия навбара) */
+    transition: transform 0.2s ease;
+}
+
+/* Размер самой иконки */
+.tech-item img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+/* Текстовая подпись под иконкой */
+.tech-item span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #252525;
+    transition: color 0.2s ease;
+}
+
+/* ==========================================
+   ЭФФЕКТ ПРИ НАВЕДЕНИИ (КАК В НАВБАРЕ)
+   ========================================== */
+
+.tech-item:hover {
+    /* Применяем scale(1.08) поверх текущего положения анимации */
+    transform: scale(1.08); 
+    /* Мягко останавливаем покачивание, чтобы элемент зафиксировался */
+    animation-play-state: paused;
+}
+
+.tech-item:hover span {
+    color: #cc0c0c; /* Текст становится фирменным красным */
+}
+
+
+/* ==========================================
+   КЛЮЧЕВЫЕ КАДРЫ ДЛЯ ВЕРТИКАЛЬНОГО ДРЕЙФА
+   ========================================== */
+
+@keyframes liveVerticalFloat {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px); /* Карточка целиком плавно взлетает вверх */
+    }
+    100% {
+        transform: translateY(0); /* Возвращается обратно */
+    }
+}
+
+/* ==========================================
+   ЭФФЕКТ ПРИ НАВЕДЕНИИ (КОПИЯ НАВБАРА)
+   ========================================== */
+.tech-item:hover {
+    transform: scale(1.08); /* Ровно 8% увеличения всей конструкции */
+}
+
+.tech-item:hover span {
+    color: #cc0c0c; /* Текст плавно окрашивается в твой фирменный красный */
+}
+
+
+
+/* ==========================================
+   НАСТРОЙКА LINKEDIN
+   ========================================== */
+
+/* Задаем фирменный синий цвет LinkedIn и физику прыжка */
+.social-icon-linkedin-hover {
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.46, -0.78, 0.5, 1.56);
+  background: #0077b5;
+}
+
+/* При наведении выталкиваем цветной блок LinkedIn наверх */
+.socialcontainer:hover .social-icon-linkedin-hover {
+  transform: translateY(-70px);
+}
+
+
+/* ==========================================
+   НАСТРОЙКА GITHUB
+   ========================================== */
+
+/* Задаем фирменный фиолетово-темный градиент для GitHub и физику прыжка */
+.social-icon-github-hover {
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.46, -0.78, 0.5, 1.56);
+  background: linear-gradient(
+    180deg,
+    rgba(129, 34, 144, 1) 0%,
+    rgba(77, 34, 124, 1) 91%
+  );
+}
+
+/* При наведении выталкиваем цветной блок GitHub наверх */
+.socialcontainer:hover .social-icon-github-hover {
+  transform: translateY(-70px);
+}
+
+
+/* ==========================================
+   ОБЩЕЕ ПОВЕДЕНИЕ ПРИ НАВЕДЕНИИ
+   ========================================== */
+
+/* Когда мы наводим на любой контейнер, иконка внутри цветного блока становится видимой */
+.socialcontainer:hover .social-icon-linkedin-hover svg,
+.socialcontainer:hover .social-icon-github-hover svg {
+  opacity: 1;
+}
+
+
+
+.tech-section {
+    position: relative;
+    overflow: hidden; 
+    padding-top: 240px; 
+    margin-top: -60px; 
+    padding-bottom: 80px;
+    z-index: 1;
+    /* Убираем лишнее, оставляем только важное */
+}
+
+.projects-section {
+    position: relative;
+    overflow: hidden; 
+    padding-top: 100px; 
+    margin-top: -60px; 
+    padding-bottom: 80px;
+    z-index: 1;
+    /* Убираем лишнее, оставляем только важное */
+}
+
+
+.about-section {
+    position: relative;
+    overflow: hidden; 
+    padding-top: 100px; 
+    margin-top: -60px; 
+    padding-bottom: 80px;
+    z-index: 1;
+    /* Убираем лишнее, оставляем только важное */
+}
+
+CSS
+.tech-bg-animation {
+    position: absolute;
+    top: 140px; 
+    left: 0;
+    width: 100%;
+    height: calc(100% - 220px);
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden; /* <--- ЭТО САМОЕ ВАЖНОЕ */
+}
+.rain {
+    position: absolute;
+    width: 2px;
+    height: 50px;
+    background: #cc0c0c;
+    top: -50px;
+    box-sizing: border-box; /* Чтобы ширина учитывалась внутри */
+    animation: rainDrop 3s linear infinite;
+}
+
+@keyframes rainDrop {
+    0% { transform: translateY(0); }
+    /* Летят на 100% высоты контейнера фона */
+    100% { transform: translateY(100vh); } 
+}
+
+/* Разброс капель по горизонтали и разная скорость */
+.rain:nth-child(1) { left: 5%; animation-duration: 3s; }
+.rain:nth-child(2) { left: 15%; animation-duration: 2.5s; }
+.rain:nth-child(3) { left: 25%; animation-duration: 4s; }
+.rain:nth-child(4) { left: 35%; animation-duration: 2s; }
+.rain:nth-child(5) { left: 45%; animation-duration: 3.5s; }
+.rain:nth-child(6) { left: 55%; animation-duration: 2.8s; }
+.rain:nth-child(7) { left: 65%; animation-duration: 4.2s; }
+.rain:nth-child(8) { left: 75%; animation-duration: 2.3s; }
+.rain:nth-child(9) { left: 85%; animation-duration: 3.1s; }
+.rain:nth-child(10) { left: 95%; animation-duration: 2.7s; }
+.rain:nth-child(10) { left: 95%; animation-duration: 2.7s; }
+
+@keyframes rainDrop {
+    0% { transform: translateY(0); }
+    /* Летят на 100% высоты контейнера фона */
+    100% { transform: translateY(100vh); } 
+}
+
+
+/* =========================================
+   8.Карточки проекта
+   ========================================= */
+
+.card {
+  --font-family: 'Poppins';
+  --font-color: #ffffff;
+  --bg-color: #252525;
+    width:500px;
+  height: 700px;
+  border-radius: 20px;
+  background: var(--bg-color);
+  box-shadow: -9px 9px 18px #5a5a5a,
+              9px -9px 18px #ffffff;
+  display: flex;
+  flex-direction: column;   
+  transition: .4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 0px 10px 2px #5a5a5a;
+}
+
+/* Контейнер для картинки — делаем его на всю ширину */
+.card__img {
+  width: 100%;
+  height: 100%; /* Задай высоту, которая тебе нравится */
+  overflow: hidden;
+  border-radius: 20px 20px 0 0; /* Скругление только сверху */
+  margin-bottom: 10px; /* Отступ от заголовка */
+}
+
+/* Сама картинка внутри */
+.card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Заполняет блок полностью, обрезая лишнее */
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+
+
+.card__descr-wrapper {
+  padding: 15px;
+  display: grid;
+}
+
+.card__tech {
+  color: var(--font-color);
+  font-size: 12px;
+  font-weight: 600;
+  margin: 12px 0 10px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card__tech span {
+  padding: 4px 8px;
+  border: 1px solid rgba(50, 50, 50, 0.35);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.45);
+  line-height: 1.2;
+}
+
+.card__title {
+  color: var(--font-color);
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.card__descr {
+  color: var(--font-color);
+}
+
+.svg {
+  width: 25px;
+  height: 25px;
+  transform: translateY(25%);
+  fill: var(--font-color);
+}
+
+.card__links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+}
+
+.card__links .link {
+  color: var(--font-color);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.card__links .link:hover {
+  text-decoration: none; 
+}
+
+.cards-container {
+  display: flex;            /* Включает режим выстраивания в ряд */
+  flex-direction: row;      /* Указывает направление: строка */
+  flex-wrap: wrap;          /* Если карточки не влезут, они перенесутся на новую строку */
+  justify-content: center;  /* Ставит карточки по центру */
+  gap: 30px;                /* Расстояние между ними */
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   9. Кнопка GitHub
+   ========================================= */
+.github-link,
+.preview-link {
+  /* Убираем стандартные стили ссылок */
+  all: unset; 
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  
+  /* Цвет текста и иконки */
+  color: #ffffff; 
+  font-weight: 700;
+  
+  /* Плавный переход */
+  transition: transform 0.3s ease;
+}
+
+.github-link:hover,
+.preview-link:hover {
+  /* Увеличение при наведении */
+  transform: scale(1.1); 
+}
+
+/* Иконка будет наследовать цвет текста */
+.github-icon,
+.preview-icon {
+  fill: currentColor;
+}
+
+.preview-icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* =========================================
+   10. About section
+   ========================================= */
+
+   .education-section {
+  padding: 40px 20px;
+  color: #ffffff;
+}
+
+.education-card {
+  background-color: #252525;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: -9px 9px 18px #5a5a5a, 9px -9px 18px #ffffff;
+  /* Белая полоска справа от логотипа */
+  border-left: 8px solid #cc0c0c; 
+  max-width: 800px;
+  margin: 20px auto;
+  
+  /* Анимация как у карточек */
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+/* Эффект увеличения при наведении */
+.education-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 0px 10px 2px #5a5a5a;
+}
+
+.education-logo {
+  width: 120px;
+  height: 120px;
+  margin-right: 20px; /* Отступ текста от лого */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.education-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Стили текста оставляем прежними, просто убираем margin-left у лого */
+.education-info {
+  flex: 1;
+}
