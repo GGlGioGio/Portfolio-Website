@@ -979,13 +979,26 @@ svg {
     justify-content: center;
   }
 
+  .GiorgiKhelaia {
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+
   .nav-links {
     position: static;
     transform: none;
-    order: 3;
+    order: 2;
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .nav-social-container {
+    order: 3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .hero-container {
@@ -1037,12 +1050,18 @@ svg {
     row-gap: 12px;
   }
 
+  .nav-social-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
   .nav-links a {
     font-size: clamp(1rem, 4vw, 1.25rem);
   }
 
   .social-login-icons {
-    -webkit-box-reflect: unset;
+    -webkit-box-reflect: none;
   }
 
   .btn-container {
